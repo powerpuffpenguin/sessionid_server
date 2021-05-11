@@ -1,4 +1,4 @@
-module github.com/powerpuffpenguin/sessionid/server
+module github.com/powerpuffpenguin/sessionid_server
 
 go 1.16
 
