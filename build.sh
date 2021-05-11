@@ -13,7 +13,9 @@ function help(){
     echo "  help              help for $0"
     echo "  clear             clear output"
     echo "  go                go build helper"
+    echo "  grpc              grpc protoc helper"
     echo "  pack              pack release"
+    echo "  run               run server"
     echo
     echo "Flags:"
     echo "  -h, --help          help for $0"
@@ -37,6 +39,16 @@ case "$1" in
         shift
         export Command="$0 go"
         "$BashDir/script/go.sh" "$@"
+    ;;
+    grpc)
+        shift
+        export Command="$0 grpc"
+        "$BashDir/script/grpc.sh" "$@"
+    ;;
+    run)
+        shift
+        export Command="$0 go"
+        "$BashDir/bin/server" -conf "$BashDir/bin/server.jsonnet"
     ;;
     *)
         if [[ "$1" == "" ]];then

@@ -2,7 +2,6 @@ package configure
 
 import (
 	"encoding/json"
-	"fmt"
 
 	"github.com/google/go-jsonnet"
 )
@@ -14,6 +13,9 @@ func DefaultConfigure() *Configure {
 }
 
 type Configure struct {
+	Server   Server
+	Manager  Manager
+	Provider Provider
 }
 
 func Load(filename string) (e error) {
@@ -24,7 +26,6 @@ func Load(filename string) (e error) {
 		return
 	}
 	cnf := DefaultConfigure()
-	fmt.Println(jsonStr)
 	e = json.Unmarshal([]byte(jsonStr), cnf)
 	return
 }

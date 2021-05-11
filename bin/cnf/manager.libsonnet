@@ -6,6 +6,4 @@ local coder = def.Coder;
     Method: method.HMD5,
     // Signing key
     Key: 'cerberus is an idea',
-    // Serialization coder
-    Coder: coder.JSON,
 }

@@ -11,3 +11,6 @@ Platforms=(
     linux/s390x
     linux/amd64
 )
+Protos=(
+    manager/manager.proto
+)

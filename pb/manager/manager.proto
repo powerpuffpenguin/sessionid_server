@@ -1,0 +1,73 @@
+syntax = "proto3";
+
+package manager;
+option go_package = "github.com/powerpuffpenguin/sessionid_server/protocol/manager";
+
+import "google/api/annotations.proto";
+
+service Manager {
+    rpc Create (CreateRequest) returns (CreateResponse){
+        option (google.api.http) = {
+            post: "/api/v1/managers"
+            body: "*"
+        };
+    }
+    rpc RemoveID (RemoveIDRequest) returns (RemoveIDResponse){
+        option (google.api.http) = {
+            delete: "/api/v1/managers/id/{id}"
+        };
+    }
+    rpc RemoveAccess (RemoveAccessRequest) returns (RemoveAccessResponse){
+        option (google.api.http) = {
+            delete: "/api/v1/managers/access/{access}"
+        };
+    }
+    rpc Get (GetRequest) returns (GetResponse){
+        option (google.api.http) = {
+            get: "/api/v1/managers/access/{access}"
+        };
+    }
+    rpc Refresh (RefreshRequest) returns (RefreshResponse){
+        option (google.api.http) = {
+            put: "/api/v1/managers"
+        };
+    }
+}
+message Pair{
+    string key = 1;   
+	bytes value = 2;
+}
+message CreateRequest{
+    string id = 1;
+    repeated Pair pairs  = 2;
+}
+message CreateResponse{
+   string id = 1;
+   string access = 2;
+   string refresh = 3;
+}
+message RemoveIDRequest{
+    string id = 1;
+}
+message RemoveIDResponse{
+}
+message RemoveAccessRequest{
+    string access = 1;
+}
+message RemoveAccessResponse{
+}
+message GetRequest{
+    string access = 1;
+}
+message GetResponse{
+    string id = 1;
+    string refresh = 3;
+ }
+ message RefreshRequest{
+    string access = 1;
+    string refresh = 2;
+ }
+ message RefreshResponse{
+    string access = 1;
+    string refresh = 2;
+ }
