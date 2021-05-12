@@ -68,7 +68,7 @@ function buildGo(){
         --go_out="'$output'" --go_opt=paths=source_relative
         --go-grpc_out="'$output'" --go-grpc_opt=paths=source_relative
         --grpc-gateway_out="'$output'" --grpc-gateway_opt=paths=source_relative
-        --openapiv2_out="'$document'"
+        --openapiv2_out="'$document'" --openapiv2_opt logtostderr=true --openapiv2_opt use_go_templates=true 
     )
     local exec="${command[@]} ${opts[@]} ${Protos[@]}"
     echo $exec
@@ -77,9 +77,8 @@ function buildGo(){
     declare -i step
     local steps=${#Protos[@]}
     local filename="$document/urls.js"
-    if [[ -f "$filename" ]];then
-        rm "$filename"
-    fi
+    local proto url name
+    echo "URLS = [" > "$filename"
     for i in ${!Protos[@]};do
         if [[ $i != 0 ]];then
             echo
@@ -87,9 +86,17 @@ function buildGo(){
         
         proto=${Protos[i]}
         step=i+1
+        
+        url=${proto%.proto}
+        name=${url%\/*}
+        echo $url
         echo "step $step/$steps"
-        # "$BashDir/go.sh" -p "$pack" -P "$platform"
+        echo "  {"  >> "$filename"
+        echo "      name: '$name',"  >> "$filename"
+        echo "      url: 'api/$url.swagger.json',"  >> "$filename"
+        echo "  },"  >> "$filename"
     done
+    echo "]" >> "$filename"
 }
 case "$lang" in
     go)

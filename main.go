@@ -6,6 +6,7 @@ import (
 	"log"
 
 	"github.com/powerpuffpenguin/sessionid_server/configure"
+	"github.com/powerpuffpenguin/sessionid_server/server"
 	"github.com/powerpuffpenguin/sessionid_server/version"
 )
 
@@ -27,6 +28,21 @@ func main() {
 		fmt.Println(version.Version)
 	} else {
 		e := configure.Load(cnf)
+		if e != nil {
+			log.Fatalln(e)
+		}
+		serverCnf := configure.DefaultConfigure().Server
+		srv, e := server.NewServer(serverCnf.Addr)
+		if e != nil {
+			log.Fatalln(e)
+		}
+		if serverCnf.CertFile == `` && serverCnf.KeyFile == `` {
+			log.Println(`h2c work at`, serverCnf.Addr)
+			e = srv.Serve()
+		} else {
+			log.Println(`h2 work at`, serverCnf.Addr)
+			e = srv.ServeTLS(serverCnf.CertFile, serverCnf.KeyFile)
+		}
 		if e != nil {
 			log.Fatalln(e)
 		}
