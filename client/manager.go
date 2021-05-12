@@ -6,12 +6,14 @@ import (
 
 	"github.com/powerpuffpenguin/sessionid"
 	grpc_manager "github.com/powerpuffpenguin/sessionid_server/protocol/manager"
+	grpc_provider "github.com/powerpuffpenguin/sessionid_server/protocol/provider"
 	"google.golang.org/grpc"
 )
 
 type Manager struct {
-	manager grpc_manager.ManagerClient
-	coder   sessionid.Coder
+	manager  grpc_manager.ManagerClient
+	provider grpc_provider.ProviderClient
+	coder    sessionid.Coder
 }
 
 func NewManager(cc *grpc.ClientConn, coder sessionid.Coder) *Manager {
