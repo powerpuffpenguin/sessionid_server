@@ -7,6 +7,7 @@ import (
 
 	"github.com/powerpuffpenguin/sessionid_server/configure"
 	_ "github.com/powerpuffpenguin/sessionid_server/gmodule/manager"
+	_ "github.com/powerpuffpenguin/sessionid_server/gmodule/provider"
 	"github.com/powerpuffpenguin/sessionid_server/server"
 	"github.com/powerpuffpenguin/sessionid_server/version"
 )

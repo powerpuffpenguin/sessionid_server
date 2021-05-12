@@ -8,28 +8,30 @@ import "google/api/annotations.proto";
 service Manager {
     rpc Create (CreateRequest) returns (CreateResponse){
         option (google.api.http) = {
-            post: "/api/v1/managers"
+            post: "/api/v1/manager"
             body: "*"
         };
     }
     rpc RemoveID (RemoveIDRequest) returns (RemoveIDResponse){
         option (google.api.http) = {
-            delete: "/api/v1/managers/id/{id}"
+            delete: "/api/v1/manager/id/{id}"
         };
     }
     rpc RemoveAccess (RemoveAccessRequest) returns (RemoveAccessResponse){
         option (google.api.http) = {
-            delete: "/api/v1/managers/access/{access}"
+            delete: "/api/v1/manager/access/{access}"
         };
     }
     rpc Verify (VerifyRequest) returns (VerifyResponse){
         option (google.api.http) = {
-            post: "/api/v1/managers/verify/{access}"
+            post: "/api/v1/manager/verify/{access}"
+            body: "*"
         };
     }
     rpc Refresh (RefreshRequest) returns (RefreshResponse){
         option (google.api.http) = {
-            put: "/api/v1/managers"
+            put: "/api/v1/manager"
+            body: "*"
         };
     }
 }

@@ -16,7 +16,7 @@
     "application/json"
   ],
   "paths": {
-    "/api/v1/managers": {
+    "/api/v1/manager": {
       "post": {
         "operationId": "Manager_Create",
         "responses": {
@@ -63,12 +63,22 @@
             }
           }
         },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/managerRefreshRequest"
+            }
+          }
+        ],
         "tags": [
           "Manager"
         ]
       }
     },
-    "/api/v1/managers/access/{access}": {
+    "/api/v1/manager/access/{access}": {
       "delete": {
         "operationId": "Manager_RemoveAccess",
         "responses": {
@@ -98,7 +108,7 @@
         ]
       }
     },
-    "/api/v1/managers/id/{id}": {
+    "/api/v1/manager/id/{id}": {
       "delete": {
         "operationId": "Manager_RemoveID",
         "responses": {
@@ -128,7 +138,7 @@
         ]
       }
     },
-    "/api/v1/managers/verify/{access}": {
+    "/api/v1/manager/verify/{access}": {
       "post": {
         "operationId": "Manager_Verify",
         "responses": {
@@ -151,6 +161,14 @@
             "in": "path",
             "required": true,
             "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/managerVerifyRequest"
+            }
           }
         ],
         "tags": [
@@ -200,6 +218,17 @@
         }
       }
     },
+    "managerRefreshRequest": {
+      "type": "object",
+      "properties": {
+        "access": {
+          "type": "string"
+        },
+        "refresh": {
+          "type": "string"
+        }
+      }
+    },
     "managerRefreshResponse": {
       "type": "object",
       "properties": {
@@ -216,6 +245,14 @@
     },
     "managerRemoveIDResponse": {
       "type": "object"
+    },
+    "managerVerifyRequest": {
+      "type": "object",
+      "properties": {
+        "access": {
+          "type": "string"
+        }
+      }
     },
     "managerVerifyResponse": {
       "type": "object",

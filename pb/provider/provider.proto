@@ -1,0 +1,121 @@
+syntax = "proto3";
+
+package provider;
+option go_package = "github.com/powerpuffpenguin/sessionid_server/protocol/provider";
+
+import "google/api/annotations.proto";
+
+service Provider {
+    rpc Create (CreateRequest) returns (CreateResponse){
+        option (google.api.http) = {
+            post: "/api/v1/provider"
+            body: "*"
+        };
+    }
+    rpc RemoveID (RemoveIDRequest) returns (RemoveIDResponse){
+        option (google.api.http) = {
+            delete: "/api/v1/provider/id/{id}"
+        };
+    }
+    rpc RemoveAccess (RemoveAccessRequest) returns (RemoveAccessResponse){
+        option (google.api.http) = {
+            delete: "/api/v1/provider/access/{access}"
+        };
+    }
+    rpc Verify (VerifyRequest) returns (VerifyResponse){
+        option (google.api.http) = {
+            post: "/api/v1/provider/verify/{access}"
+            body: "*"
+        };
+    }
+    rpc Put (PutRequest) returns (PutResponse){
+        option (google.api.http) = {
+            put: "/api/v1/provider/access/{access}"
+            body: "*"
+        };
+    }
+    rpc Get (GetRequest) returns (GetResponse){
+        option (google.api.http) = {
+            get: "/api/v1/provider/access/{access}"
+        };
+    }
+    rpc Keys (KeysRequest) returns (KeysResponse){
+        option (google.api.http) = {
+            get: "/api/v1/provider/keys/{access}"
+        };
+    }
+    rpc RemoveKeys (RemoveKeysRequest) returns (RemoveKeysResponse){
+        option (google.api.http) = {
+            delete: "/api/v1/provider/keys/{access}"
+        };
+    }
+    rpc Refresh (RefreshRequest) returns (RefreshResponse){
+        option (google.api.http) = {
+            post: "/api/v1/provider/refresh"
+            body: "*"
+        };
+    }
+}
+message Pair{
+    string key = 1;   
+	bytes value = 2;
+}
+message Value{
+    bytes bytes = 1;
+    bool exists = 2;
+}
+message CreateRequest{
+    string access = 1;
+    string refresh = 2;
+    repeated Pair pairs  = 3;
+}
+message CreateResponse{
+}
+message RemoveIDRequest{
+    string id = 1;
+}
+message RemoveIDResponse{
+}
+message RemoveAccessRequest{
+    string access = 1;
+}
+message RemoveAccessResponse{
+}
+message VerifyRequest{
+    string access = 1;
+}
+message VerifyResponse{
+}
+message PutRequest{
+    string access = 1;
+    repeated Pair pairs  = 2;
+}
+message PutResponse{
+}
+message GetRequest{
+    string access = 1;
+    repeated string keys = 2;
+}
+message GetResponse{
+    repeated Value value = 1;
+}
+message KeysRequest{
+    string access = 1;
+}
+message KeysResponse{
+    repeated string result = 1;
+}
+message RemoveKeysRequest{
+    string access = 1;
+    repeated string keys = 2;
+}
+message RemoveKeysResponse{
+}
+message RefreshRequest{
+    string access = 1;
+    string refresh = 2;
+    string newAccess = 3;
+    string newRefresh = 4;
+}
+message RefreshResponse {
+}
