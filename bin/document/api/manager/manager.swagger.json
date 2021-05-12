@@ -69,34 +69,6 @@
       }
     },
     "/api/v1/managers/access/{access}": {
-      "get": {
-        "operationId": "Manager_Get",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/managerGetResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "access",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "tags": [
-          "Manager"
-        ]
-      },
       "delete": {
         "operationId": "Manager_RemoveAccess",
         "responses": {
@@ -155,6 +127,36 @@
           "Manager"
         ]
       }
+    },
+    "/api/v1/managers/verify/{access}": {
+      "post": {
+        "operationId": "Manager_Verify",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/managerVerifyResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "access",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "Manager"
+        ]
+      }
     }
   },
   "definitions": {
@@ -179,17 +181,6 @@
           "type": "string"
         },
         "access": {
-          "type": "string"
-        },
-        "refresh": {
-          "type": "string"
-        }
-      }
-    },
-    "managerGetResponse": {
-      "type": "object",
-      "properties": {
-        "id": {
           "type": "string"
         },
         "refresh": {
@@ -225,6 +216,17 @@
     },
     "managerRemoveIDResponse": {
       "type": "object"
+    },
+    "managerVerifyResponse": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "refresh": {
+          "type": "string"
+        }
+      }
     },
     "protobufAny": {
       "type": "object",

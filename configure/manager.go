@@ -5,6 +5,4 @@ type Manager struct {
 	Method string
 	// Signing key
 	Key string
-	// Serialization coder
-	Coder string
 }

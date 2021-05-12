@@ -22,9 +22,9 @@ service Manager {
             delete: "/api/v1/managers/access/{access}"
         };
     }
-    rpc Get (GetRequest) returns (GetResponse){
+    rpc Verify (VerifyRequest) returns (VerifyResponse){
         option (google.api.http) = {
-            get: "/api/v1/managers/access/{access}"
+            post: "/api/v1/managers/verify/{access}"
         };
     }
     rpc Refresh (RefreshRequest) returns (RefreshResponse){
@@ -56,10 +56,10 @@ message RemoveAccessRequest{
 }
 message RemoveAccessResponse{
 }
-message GetRequest{
+message VerifyRequest{
     string access = 1;
 }
-message GetResponse{
+message VerifyResponse{
     string id = 1;
     string refresh = 3;
  }

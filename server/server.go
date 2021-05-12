@@ -39,7 +39,7 @@ func NewServer(addr string) (s *Server, e error) {
 		return
 	}
 
-	proxyMux := runtime.NewServeMux()
+	proxyMux := newProxy()
 
 	s = &Server{
 		pipe:     pipe,

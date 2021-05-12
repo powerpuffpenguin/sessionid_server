@@ -1,6 +1,8 @@
 package gmodule
 
 import (
+	"log"
+
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"google.golang.org/grpc"
 )
@@ -16,6 +18,7 @@ func RegisterModule(id string, m Module) {
 	if _, ok := keys[id]; ok {
 		panic(`module id already exists : ` + id)
 	}
+	log.Println(`register module :`, id)
 	keys[id] = m
 }
 func InitServer(srv *grpc.Server, mux *runtime.ServeMux, cc *grpc.ClientConn) {

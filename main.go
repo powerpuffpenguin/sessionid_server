@@ -6,6 +6,7 @@ import (
 	"log"
 
 	"github.com/powerpuffpenguin/sessionid_server/configure"
+	_ "github.com/powerpuffpenguin/sessionid_server/gmodule/manager"
 	"github.com/powerpuffpenguin/sessionid_server/server"
 	"github.com/powerpuffpenguin/sessionid_server/version"
 )

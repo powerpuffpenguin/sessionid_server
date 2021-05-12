@@ -21,7 +21,7 @@ type ManagerClient interface {
 	Create(ctx context.Context, in *CreateRequest, opts ...grpc.CallOption) (*CreateResponse, error)
 	RemoveID(ctx context.Context, in *RemoveIDRequest, opts ...grpc.CallOption) (*RemoveIDResponse, error)
 	RemoveAccess(ctx context.Context, in *RemoveAccessRequest, opts ...grpc.CallOption) (*RemoveAccessResponse, error)
-	Get(ctx context.Context, in *GetRequest, opts ...grpc.CallOption) (*GetResponse, error)
+	Verify(ctx context.Context, in *VerifyRequest, opts ...grpc.CallOption) (*VerifyResponse, error)
 	Refresh(ctx context.Context, in *RefreshRequest, opts ...grpc.CallOption) (*RefreshResponse, error)
 }
 
@@ -60,9 +60,9 @@ func (c *managerClient) RemoveAccess(ctx context.Context, in *RemoveAccessReques
 	return out, nil
 }
 
-func (c *managerClient) Get(ctx context.Context, in *GetRequest, opts ...grpc.CallOption) (*GetResponse, error) {
-	out := new(GetResponse)
-	err := c.cc.Invoke(ctx, "/manager.Manager/Get", in, out, opts...)
+func (c *managerClient) Verify(ctx context.Context, in *VerifyRequest, opts ...grpc.CallOption) (*VerifyResponse, error) {
+	out := new(VerifyResponse)
+	err := c.cc.Invoke(ctx, "/manager.Manager/Verify", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -85,7 +85,7 @@ type ManagerServer interface {
 	Create(context.Context, *CreateRequest) (*CreateResponse, error)
 	RemoveID(context.Context, *RemoveIDRequest) (*RemoveIDResponse, error)
 	RemoveAccess(context.Context, *RemoveAccessRequest) (*RemoveAccessResponse, error)
-	Get(context.Context, *GetRequest) (*GetResponse, error)
+	Verify(context.Context, *VerifyRequest) (*VerifyResponse, error)
 	Refresh(context.Context, *RefreshRequest) (*RefreshResponse, error)
 	mustEmbedUnimplementedManagerServer()
 }
@@ -103,8 +103,8 @@ func (UnimplementedManagerServer) RemoveID(context.Context, *RemoveIDRequest) (*
 func (UnimplementedManagerServer) RemoveAccess(context.Context, *RemoveAccessRequest) (*RemoveAccessResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method RemoveAccess not implemented")
 }
-func (UnimplementedManagerServer) Get(context.Context, *GetRequest) (*GetResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method Get not implemented")
+func (UnimplementedManagerServer) Verify(context.Context, *VerifyRequest) (*VerifyResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Verify not implemented")
 }
 func (UnimplementedManagerServer) Refresh(context.Context, *RefreshRequest) (*RefreshResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Refresh not implemented")
@@ -176,20 +176,20 @@ func _Manager_RemoveAccess_Handler(srv interface{}, ctx context.Context, dec fun
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Manager_Get_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetRequest)
+func _Manager_Verify_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(VerifyRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(ManagerServer).Get(ctx, in)
+		return srv.(ManagerServer).Verify(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/manager.Manager/Get",
+		FullMethod: "/manager.Manager/Verify",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ManagerServer).Get(ctx, req.(*GetRequest))
+		return srv.(ManagerServer).Verify(ctx, req.(*VerifyRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -232,8 +232,8 @@ var Manager_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _Manager_RemoveAccess_Handler,
 		},
 		{
-			MethodName: "Get",
-			Handler:    _Manager_Get_Handler,
+			MethodName: "Verify",
+			Handler:    _Manager_Verify_Handler,
 		},
 		{
 			MethodName: "Refresh",
