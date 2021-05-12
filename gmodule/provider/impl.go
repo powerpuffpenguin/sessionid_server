@@ -4,12 +4,14 @@ import (
 	"context"
 
 	"github.com/powerpuffpenguin/sessionid"
+	"github.com/powerpuffpenguin/sessionid_server/gmodule"
 	grpc_provider "github.com/powerpuffpenguin/sessionid_server/protocol/provider"
 	"github.com/powerpuffpenguin/sessionid_server/system"
 )
 
 type server struct {
 	grpc_provider.UnimplementedProviderServer
+	gmodule.Helper
 }
 
 var emptyCreateResponse grpc_provider.CreateResponse
@@ -57,9 +59,10 @@ func (server) RemoveAccess(ctx context.Context, req *grpc_provider.RemoveAccessR
 
 var emptyVerifyResponse grpc_provider.VerifyResponse
 
-func (server) Verify(ctx context.Context, req *grpc_provider.VerifyRequest) (resp *grpc_provider.VerifyResponse, e error) {
+func (s server) Verify(ctx context.Context, req *grpc_provider.VerifyRequest) (resp *grpc_provider.VerifyResponse, e error) {
 	e = system.DefaultProvider().Check(ctx, req.Access)
 	if e != nil {
+		e = s.ToError(e)
 		return
 	}
 	resp = &emptyVerifyResponse
@@ -68,7 +71,7 @@ func (server) Verify(ctx context.Context, req *grpc_provider.VerifyRequest) (res
 
 var emptyPutResponse grpc_provider.PutResponse
 
-func (server) Put(ctx context.Context, req *grpc_provider.PutRequest) (resp *grpc_provider.PutResponse, e error) {
+func (s server) Put(ctx context.Context, req *grpc_provider.PutRequest) (resp *grpc_provider.PutResponse, e error) {
 	kv := make([]sessionid.PairBytes, 0, len(req.Pairs))
 	for _, pair := range req.Pairs {
 		kv = append(kv, sessionid.PairBytes{
@@ -78,14 +81,16 @@ func (server) Put(ctx context.Context, req *grpc_provider.PutRequest) (resp *grp
 	}
 	e = system.DefaultProvider().Put(ctx, req.Access, kv)
 	if e != nil {
+		e = s.ToError(e)
 		return
 	}
 	resp = &emptyPutResponse
 	return
 }
-func (server) Get(ctx context.Context, req *grpc_provider.GetRequest) (resp *grpc_provider.GetResponse, e error) {
+func (s server) Get(ctx context.Context, req *grpc_provider.GetRequest) (resp *grpc_provider.GetResponse, e error) {
 	result, e := system.DefaultProvider().Get(ctx, req.Access, req.Keys)
 	if e != nil {
+		e = s.ToError(e)
 		return
 	}
 	resp = &grpc_provider.GetResponse{}
@@ -100,9 +105,10 @@ func (server) Get(ctx context.Context, req *grpc_provider.GetRequest) (resp *grp
 	}
 	return
 }
-func (server) Keys(ctx context.Context, req *grpc_provider.KeysRequest) (resp *grpc_provider.KeysResponse, e error) {
+func (s server) Keys(ctx context.Context, req *grpc_provider.KeysRequest) (resp *grpc_provider.KeysResponse, e error) {
 	keys, e := system.DefaultProvider().Keys(ctx, req.Access)
 	if e != nil {
+		e = s.ToError(e)
 		return
 	}
 	resp = &grpc_provider.KeysResponse{
@@ -124,12 +130,13 @@ func (server) RemoveKeys(ctx context.Context, req *grpc_provider.RemoveKeysReque
 
 var emptyRefreshResponse grpc_provider.RefreshResponse
 
-func (server) Refresh(ctx context.Context, req *grpc_provider.RefreshRequest) (resp *grpc_provider.RefreshResponse, e error) {
+func (s server) Refresh(ctx context.Context, req *grpc_provider.RefreshRequest) (resp *grpc_provider.RefreshResponse, e error) {
 	e = system.DefaultProvider().Refresh(ctx,
 		req.Access, req.Refresh,
 		req.NewAccess, req.NewRefresh,
 	)
 	if e != nil {
+		e = s.ToError(e)
 		return
 	}
 	resp = &emptyRefreshResponse

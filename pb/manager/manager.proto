@@ -63,7 +63,6 @@ message VerifyRequest{
 }
 message VerifyResponse{
     string id = 1;
-    string refresh = 3;
  }
  message RefreshRequest{
     string access = 1;

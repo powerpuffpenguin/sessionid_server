@@ -4,14 +4,14 @@ import (
 	"context"
 
 	"github.com/powerpuffpenguin/sessionid"
+	"github.com/powerpuffpenguin/sessionid_server/gmodule"
 	grpc_manager "github.com/powerpuffpenguin/sessionid_server/protocol/manager"
 	"github.com/powerpuffpenguin/sessionid_server/system"
-	"google.golang.org/grpc/codes"
-	"google.golang.org/grpc/status"
 )
 
 type server struct {
 	grpc_manager.UnimplementedManagerServer
+	gmodule.Helper
 }
 
 func (server) Create(ctx context.Context, req *grpc_manager.CreateRequest) (resp *grpc_manager.CreateResponse, e error) {
@@ -33,15 +33,50 @@ func (server) Create(ctx context.Context, req *grpc_manager.CreateRequest) (resp
 	}
 	return
 }
-func (server) RemoveID(context.Context, *grpc_manager.RemoveIDRequest) (*grpc_manager.RemoveIDResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method RemoveID not implemented")
+
+var emptyRemoveIDResponse grpc_manager.RemoveIDResponse
+
+func (s server) RemoveID(ctx context.Context, req *grpc_manager.RemoveIDRequest) (resp *grpc_manager.RemoveIDResponse, e error) {
+	e = system.DefaultManager().Destroy(ctx, req.Id)
+	if e != nil {
+		return
+	}
+	resp = &emptyRemoveIDResponse
+	return
 }
-func (server) RemoveAccess(context.Context, *grpc_manager.RemoveAccessRequest) (*grpc_manager.RemoveAccessResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method RemoveAccess not implemented")
+
+var emptyRemoveAccessResponse grpc_manager.RemoveAccessResponse
+
+func (server) RemoveAccess(ctx context.Context, req *grpc_manager.RemoveAccessRequest) (resp *grpc_manager.RemoveAccessResponse, e error) {
+	e = system.DefaultManager().DestroyByToken(ctx, req.Access)
+	if e != nil {
+		return
+	}
+	resp = &emptyRemoveAccessResponse
+	return
 }
-func (server) Verify(context.Context, *grpc_manager.VerifyRequest) (*grpc_manager.VerifyResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method Get not implemented")
+func (s server) Verify(ctx context.Context, req *grpc_manager.VerifyRequest) (resp *grpc_manager.VerifyResponse, e error) {
+	id, e := system.DefaultManager().Verify(ctx, req.Access)
+	if e != nil {
+		e = s.ToError(e)
+		return
+	}
+	resp = &grpc_manager.VerifyResponse{
+		Id: id,
+	}
+	return
 }
-func (server) Refresh(context.Context, *grpc_manager.RefreshRequest) (*grpc_manager.RefreshResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method Refresh not implemented")
+func (s server) Refresh(ctx context.Context, req *grpc_manager.RefreshRequest) (resp *grpc_manager.RefreshResponse, e error) {
+	access, refresh, e := system.DefaultManager().Refresh(ctx,
+		req.Access, req.Refresh,
+	)
+	if e != nil {
+		e = s.ToError(e)
+		return
+	}
+	resp = &grpc_manager.RefreshResponse{
+		Access:  access,
+		Refresh: refresh,
+	}
+	return
 }
