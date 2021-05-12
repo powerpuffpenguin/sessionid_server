@@ -9,6 +9,7 @@ import (
 	_ "github.com/powerpuffpenguin/sessionid_server/gmodule/manager"
 	_ "github.com/powerpuffpenguin/sessionid_server/gmodule/provider"
 	"github.com/powerpuffpenguin/sessionid_server/server"
+	"github.com/powerpuffpenguin/sessionid_server/system"
 	"github.com/powerpuffpenguin/sessionid_server/version"
 )
 
@@ -33,6 +34,8 @@ func main() {
 		if e != nil {
 			log.Fatalln(e)
 		}
+		system.Init()
+
 		serverCnf := configure.DefaultConfigure().Server
 		srv, e := server.NewServer(serverCnf.Addr)
 		if e != nil {
