@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -e
+
 BashDir=$(cd "$(dirname $BASH_SOURCE)" && pwd)
 
 function help(){
@@ -16,7 +18,7 @@ function help(){
     echo "  static            static build helper"
     echo "  grpc              grpc protoc helper"
     echo "  pack              pack release"
-    echo "  run               run server"
+    echo "  run               run project"
     echo
     echo "Flags:"
     echo "  -h, --help          help for $0"
@@ -53,8 +55,8 @@ case "$1" in
     ;;
     run)
         shift
-        export Command="$0 go"
-        "$BashDir/bin/server" -conf "$BashDir/bin/server.jsonnet"
+        export Command="$0 run"
+        "$BashDir/script/run.sh" "$@"
     ;;
     *)
         if [[ "$1" == "" ]];then

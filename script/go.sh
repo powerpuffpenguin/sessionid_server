@@ -122,6 +122,9 @@ exec="${args[@]}"
 echo $exec
 eval "$exec"
 
+# upx 
+upx "bin/$target"
+
 # pack
 if [[ "$pack" == "" ]];then
     exit 0

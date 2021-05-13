@@ -18,6 +18,7 @@
   "paths": {
     "/api/v1/manager": {
       "post": {
+        "summary": "Create an authorization token",
         "operationId": "Manager_Create",
         "responses": {
           "200": {

@@ -18,6 +18,7 @@ const _ = grpc.SupportPackageIsVersion7
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type ManagerClient interface {
+	// Create an authorization token
 	Create(ctx context.Context, in *CreateRequest, opts ...grpc.CallOption) (*CreateResponse, error)
 	RemoveID(ctx context.Context, in *RemoveIDRequest, opts ...grpc.CallOption) (*RemoveIDResponse, error)
 	RemoveAccess(ctx context.Context, in *RemoveAccessRequest, opts ...grpc.CallOption) (*RemoveAccessResponse, error)
@@ -82,6 +83,7 @@ func (c *managerClient) Refresh(ctx context.Context, in *RefreshRequest, opts ..
 // All implementations must embed UnimplementedManagerServer
 // for forward compatibility
 type ManagerServer interface {
+	// Create an authorization token
 	Create(context.Context, *CreateRequest) (*CreateResponse, error)
 	RemoveID(context.Context, *RemoveIDRequest) (*RemoveIDResponse, error)
 	RemoveAccess(context.Context, *RemoveAccessRequest) (*RemoveAccessResponse, error)
