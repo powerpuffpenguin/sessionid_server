@@ -18,15 +18,56 @@ func NewProvider(cc *grpc.ClientConn) *Provider {
 	}
 }
 
-// // Create new session
-// Create(ctx context.Context,
-// 	access, refresh string, // id.sessionid.signature
-// 	pair []PairBytes,
-// ) (e error)
-// // Destroy a session by id
-// Destroy(ctx context.Context, id string) (e error)
-// // Destroy a session by token
-// DestroyByToken(ctx context.Context, token string) (e error)
+// Create new session
+func (p *Provider) Create(ctx context.Context,
+	access, refresh string, // id.sessionid.signature
+	pair []sessionid.PairBytes,
+) (e error) {
+	req := &grpc_provider.CreateRequest{
+		Access:  access,
+		Refresh: refresh,
+	}
+	if len(pair) != 0 {
+		req.Pairs = make([]*grpc_provider.Pair, len(pair))
+		for i, val := range pair {
+			req.Pairs[i] = &grpc_provider.Pair{
+				Key:   val.Key,
+				Value: val.Value,
+			}
+		}
+	}
+	_, e = p.provider.Create(ctx, req)
+	if e != nil {
+		e = toError(e)
+		return
+	}
+	return
+}
+
+// Destroy a session by id
+func (p *Provider) Destroy(ctx context.Context, id string) (e error) {
+	_, e = p.provider.RemoveID(ctx, &grpc_provider.RemoveIDRequest{
+		Id: id,
+	})
+	if e != nil {
+		e = toError(e)
+		return
+	}
+	return
+}
+
+// Destroy a session by token
+func (p *Provider) DestroyByToken(ctx context.Context, token string) (e error) {
+	_, e = p.provider.RemoveAccess(ctx, &grpc_provider.RemoveAccessRequest{
+		Access: token,
+	})
+	if e != nil {
+		e = toError(e)
+		return
+	}
+	return
+}
+
 // Check token status
 func (p *Provider) Check(ctx context.Context, token string) (e error) {
 	_, e = p.provider.Verify(ctx, &grpc_provider.VerifyRequest{

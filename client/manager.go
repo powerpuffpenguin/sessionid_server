@@ -2,24 +2,23 @@ package client
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/powerpuffpenguin/sessionid"
 	grpc_manager "github.com/powerpuffpenguin/sessionid_server/protocol/manager"
-	grpc_provider "github.com/powerpuffpenguin/sessionid_server/protocol/provider"
 	"google.golang.org/grpc"
 )
 
 type Manager struct {
 	manager  grpc_manager.ManagerClient
-	provider grpc_provider.ProviderClient
+	provider sessionid.Provider
 	coder    sessionid.Coder
 }
 
 func NewManager(cc *grpc.ClientConn, coder sessionid.Coder) *Manager {
 	return &Manager{
-		manager: grpc_manager.NewManagerClient(cc),
-		coder:   coder,
+		manager:  grpc_manager.NewManagerClient(cc),
+		provider: NewProvider(cc),
+		coder:    coder,
 	}
 }
 
@@ -55,80 +54,60 @@ func (m *Manager) Create(ctx context.Context,
 	if e != nil {
 		return
 	}
-	fmt.Println(
-		resp.Id,
-		resp.Access,
-	)
-
-	// eid := encode([]byte(id))
-	// access, refresh, e := CreateToken(m.opts.method, m.opts.key, eid)
-	// if e != nil {
-	// 	return
-	// }
-	// opts := m.opts
-	// provider := opts.provider
-	// coder := opts.coder
-	// var kv []PairBytes
-
-	// e = provider.Create(ctx, access, refresh, kv)
-	// if e != nil {
-	// 	return
-	// }
-	// session = newSession(eid, access, provider, coder)
+	session, e = sessionid.NewSession(resp.Access, m.provider, m.coder)
+	if e != nil {
+		return
+	}
 	return
 }
 
-// // Destroy a session by id
-// func (m *LocalManager) Destroy(ctx context.Context, id string) error {
-// 	return m.opts.provider.Destroy(ctx, encode([]byte(id)))
-// }
+// Destroy a session by id
+func (m *Manager) Destroy(ctx context.Context, id string) (e error) {
+	_, e = m.manager.RemoveID(ctx, &grpc_manager.RemoveIDRequest{
+		Id: id,
+	})
+	if e != nil {
+		e = toError(e)
+		return
+	}
+	return
+}
 
-// // Destroy a session by token
-// func (m *LocalManager) DestroyByToken(ctx context.Context, token string) error {
-// 	return m.opts.provider.DestroyByToken(ctx, token)
-// }
+// Destroy a session by token
+func (m *Manager) DestroyByToken(ctx context.Context, token string) (e error) {
+	_, e = m.manager.RemoveAccess(ctx, &grpc_manager.RemoveAccessRequest{
+		Access: token,
+	})
+	if e != nil {
+		e = toError(e)
+		return
+	}
+	return
+}
 
-// // Get session from token
-// func (m *LocalManager) Get(ctx context.Context, token string) (s *Session, e error) {
-// 	id, _, signature, e := Split(token)
-// 	if e != nil {
-// 		return
-// 	}
-// 	e = m.opts.method.Verify(token[:len(token)-len(signature)-1], signature, m.opts.key)
-// 	if e != nil {
-// 		return
-// 	}
-// 	s = newSession(id, token, m.opts.provider, m.opts.coder)
-// 	return
-// }
+// Get session from token
+func (m *Manager) Get(ctx context.Context, token string) (s *sessionid.Session, e error) {
+	_, e = m.manager.Verify(ctx, &grpc_manager.VerifyRequest{
+		Access: token,
+	})
+	if e != nil {
+		e = toError(e)
+		return
+	}
+	s, e = sessionid.NewSession(token, m.provider, m.coder)
+	return
+}
 
-// // Refresh a new access token
-// func (m *LocalManager) Refresh(ctx context.Context, access, refresh string) (newAccess, newRefresh string, e error) {
-// 	id, _, signature, e := Split(access)
-// 	if e != nil {
-// 		return
-// 	}
-// 	e = m.opts.method.Verify(access[:len(access)-len(signature)-1], signature, m.opts.key)
-// 	if e != nil {
-// 		return
-// 	}
-// 	id1, _, signature, e := Split(refresh)
-// 	if e != nil {
-// 		return
-// 	}
-// 	e = m.opts.method.Verify(refresh[:len(refresh)-len(signature)-1], signature, m.opts.key)
-// 	if e != nil {
-// 		return
-// 	}
-// 	if id != id1 {
-// 		e = ErrTokenIDNotMatched
-// 		return
-// 	}
-
-// 	newAccess, newRefresh, e = CreateToken(m.opts.method, m.opts.key, id)
-// 	if e != nil {
-// 		return
-// 	}
-// 	e = m.opts.provider.Refresh(ctx, access, refresh, newAccess, newRefresh)
-// 	return
-// }
+// Refresh a new access token
+func (m *Manager) Refresh(ctx context.Context, access, refresh string) (newAccess, newRefresh string, e error) {
+	resp, e := m.manager.Refresh(ctx, &grpc_manager.RefreshRequest{
+		Access:  access,
+		Refresh: refresh,
+	})
+	if e != nil {
+		e = toError(e)
+		return
+	}
+	newAccess, newRefresh = resp.Access, resp.Refresh
+	return
+}
