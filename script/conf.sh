@@ -10,4 +10,5 @@ Platforms=(
 Protos=(
     manager/manager.proto
     provider/provider.proto
+    logger/logger.proto
 )

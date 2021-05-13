@@ -1,12 +1,12 @@
 package system
 
 import (
-	"log"
-
 	"github.com/powerpuffpenguin/sessionid"
 	"github.com/powerpuffpenguin/sessionid/provider/bolt"
 	"github.com/powerpuffpenguin/sessionid/provider/redis"
 	"github.com/powerpuffpenguin/sessionid_server/configure"
+	"github.com/powerpuffpenguin/sessionid_server/logger"
+	"go.uber.org/zap"
 )
 
 var provider sessionid.Provider
@@ -28,6 +28,13 @@ func initProvider() {
 	}
 }
 func initProviderMemory(cnf *configure.ProviderMemory) {
+	logger.Logger.Info(`memory provider`,
+		zap.Duration(`access`, cnf.Access),
+		zap.Duration(`refresh`, cnf.Refresh),
+		zap.Int(`max size`, cnf.MaxSize),
+		zap.Int(`check batch`, cnf.Batch),
+		zap.Duration(`clear`, cnf.Clear),
+	)
 	provider = sessionid.NewProvider(
 		sessionid.WithProviderAccess(cnf.Access),
 		sessionid.WithProviderRefresh(cnf.Refresh),
@@ -37,6 +44,14 @@ func initProviderMemory(cnf *configure.ProviderMemory) {
 	)
 }
 func initProviderRedis(cnf *configure.ProviderRedis) {
+	logger.Logger.Info(`redis provider`,
+		zap.String(`url`, cnf.URL),
+		zap.Duration(`access`, cnf.Access),
+		zap.Duration(`refresh`, cnf.Refresh),
+		zap.Int(`check batch`, cnf.Batch),
+		zap.String(`key prefix`, cnf.KeyPrefix),
+		zap.String(`metadata key`, cnf.MetadataKey),
+	)
 	var e error
 	provider, e = redis.New(
 		redis.WithURL(cnf.URL),
@@ -47,10 +62,26 @@ func initProviderRedis(cnf *configure.ProviderRedis) {
 		redis.WithMetadataKey(cnf.MetadataKey),
 	)
 	if e != nil {
-		log.Fatalln(e)
+		logger.Logger.Fatal(`redis provider`,
+			zap.Error(e),
+			zap.String(`url`, cnf.URL),
+			zap.Duration(`access`, cnf.Access),
+			zap.Duration(`refresh`, cnf.Refresh),
+			zap.Int(`check batch`, cnf.Batch),
+			zap.String(`key prefix`, cnf.KeyPrefix),
+			zap.String(`metadata key`, cnf.MetadataKey),
+		)
 	}
 }
 func initProviderBolt(cnf *configure.ProviderBolt) {
+	logger.Logger.Info(`bolt provider`,
+		zap.String(`filename`, cnf.Filename),
+		zap.Duration(`access`, cnf.Access),
+		zap.Duration(`refresh`, cnf.Refresh),
+		zap.Int(`max size`, cnf.MaxSize),
+		zap.Int(`check batch`, cnf.Batch),
+		zap.Duration(`clear`, cnf.Clear),
+	)
 	var e error
 	provider, e = bolt.New(
 		bolt.WithFilename(cnf.Filename),
@@ -61,6 +92,14 @@ func initProviderBolt(cnf *configure.ProviderBolt) {
 		bolt.WithClear(cnf.Clear),
 	)
 	if e != nil {
-		log.Fatalln(e)
+		logger.Logger.Fatal(`bolt provider`,
+			zap.Error(e),
+			zap.String(`filename`, cnf.Filename),
+			zap.Duration(`access`, cnf.Access),
+			zap.Duration(`refresh`, cnf.Refresh),
+			zap.Int(`max size`, cnf.MaxSize),
+			zap.Int(`check batch`, cnf.Batch),
+			zap.Duration(`clear`, cnf.Clear),
+		)
 	}
 }

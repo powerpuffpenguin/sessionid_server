@@ -1,0 +1,45 @@
+syntax = "proto3";
+
+package logger;
+option go_package = "github.com/powerpuffpenguin/sessionid_server/protocol/logger";
+
+import "google/api/annotations.proto";
+
+service Logger {
+    // return logger level
+    rpc Level (LevelRequest) returns (LevelResponse){
+        option (google.api.http) = {
+            get: "/api/v1/logger"
+        };
+    }
+    // set file level
+    rpc File (FileRequest) returns (FileResponse){
+        option (google.api.http) = {
+            post: "/api/v1/logger/file/{level}"
+        };
+    }
+    // set console level
+    rpc Console (ConsoleRequest) returns (ConsoleResponse){
+        option (google.api.http) = {
+            post: "/api/v1/logger/console/{level}"
+        };
+    }
+}
+message LevelRequest{
+}
+message LevelResponse{
+    string file = 1;
+    string console = 2;
+}
+message FileRequest{
+    // debug info warn error dpanic panic fatal
+    string level = 1;
+}
+message FileResponse{
+}
+message ConsoleRequest{
+    // debug info warn error dpanic panic fatal
+    string level = 1;
+}
+message ConsoleResponse{
+}
