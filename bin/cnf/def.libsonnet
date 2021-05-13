@@ -32,4 +32,13 @@
         Redis: 'Redis',
         Bolt: 'Bolt',
     },
+    Level:{
+        Debug: 'debug',
+        Info: 'info',
+        Warn: 'warn',
+        Error: 'error',
+        Dpanic: 'dpanic',
+        Panic: 'panic',
+        Fatal: 'fatal',
+    },
 }

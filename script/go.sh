@@ -19,11 +19,12 @@ function help(){
     echo "  -l, --list          list all supported platforms"
     echo "  -p, --pack          pack to compressed package [7z gz bz2 xz zip]"
     echo "  -P, --platform      build platform (default \"$(go env GOHOSTOS)/$(go env GOHOSTARCH)\")"
+    echo "  -u, --upx           use upx to compress executable programs"
     echo "  -h, --help          help for $Command"
 }
 
 
-ARGS=`getopt -o hldp:P:c --long help,list,os:,arch:,debug,pack:,platform:,clear -n "$Command" -- "$@"`
+ARGS=`getopt -o hldp:P:cu --long help,list,os:,arch:,debug,pack:,platform:,clear,upx -n "$Command" -- "$@"`
 eval set -- "${ARGS}"
 list=0
 debug=0
@@ -31,6 +32,7 @@ clear=0
 os="$(go env GOHOSTOS)"
 arch="$(go env GOHOSTARCH)"
 pack=""
+upx=0
 while true
 do
     case "$1" in
@@ -40,6 +42,10 @@ do
         ;;
         -l|--list)
             list=1
+            shift
+        ;;
+        -u|--upx)
+            upx=1
             shift
         ;;
         -d|--debug)
@@ -123,7 +129,9 @@ echo $exec
 eval "$exec"
 
 # upx 
-upx "bin/$target"
+if [[ $upx == 1 ]];then
+    upx "bin/$target"
+fi
 
 # pack
 if [[ "$pack" == "" ]];then

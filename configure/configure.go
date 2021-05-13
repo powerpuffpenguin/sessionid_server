@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 
 	"github.com/google/go-jsonnet"
+	"github.com/powerpuffpenguin/sessionid_server/logger"
 )
 
 var defaultConfigure Configure
@@ -16,6 +17,7 @@ type Configure struct {
 	Server   Server
 	Manager  Manager
 	Provider Provider
+	Logger   logger.Options
 }
 
 func Load(filename string) (e error) {

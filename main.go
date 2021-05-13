@@ -9,9 +9,11 @@ import (
 	"github.com/powerpuffpenguin/sessionid_server/configure"
 	_ "github.com/powerpuffpenguin/sessionid_server/gmodule/manager"
 	_ "github.com/powerpuffpenguin/sessionid_server/gmodule/provider"
+	"github.com/powerpuffpenguin/sessionid_server/logger"
 	"github.com/powerpuffpenguin/sessionid_server/server"
 	"github.com/powerpuffpenguin/sessionid_server/system"
 	"github.com/powerpuffpenguin/sessionid_server/version"
+	"go.uber.org/zap"
 )
 
 func main() {
@@ -35,6 +37,10 @@ func main() {
 		if e != nil {
 			log.Fatalln(e)
 		}
+		e = logger.Init(&configure.DefaultConfigure().Logger)
+		if e != nil {
+			log.Fatalln(e)
+		}
 		system.Init()
 
 		serverCnf := configure.DefaultConfigure().Server
@@ -43,10 +49,14 @@ func main() {
 			log.Fatalln(e)
 		}
 		if serverCnf.CertFile == `` && serverCnf.KeyFile == `` {
-			log.Println(`h2c work at`, serverCnf.Addr)
+			logger.Logger.Info(`h2c work`,
+				zap.String(`addr`, serverCnf.Addr),
+			)
 			e = srv.Serve()
 		} else {
-			log.Println(`h2 work at`, serverCnf.Addr)
+			logger.Logger.Info(`h2 work`,
+				zap.String(`addr`, serverCnf.Addr),
+			)
 			e = srv.ServeTLS(serverCnf.CertFile, serverCnf.KeyFile)
 		}
 		if e != nil {
