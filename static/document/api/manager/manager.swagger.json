@@ -49,6 +49,7 @@
         ]
       },
       "put": {
+        "summary": "Refresh access and refresh token",
         "operationId": "Manager_Refresh",
         "responses": {
           "200": {
@@ -81,6 +82,7 @@
     },
     "/api/v1/manager/access/{access}": {
       "delete": {
+        "summary": "Remove token by access token",
         "operationId": "Manager_RemoveAccess",
         "responses": {
           "200": {
@@ -99,6 +101,7 @@
         "parameters": [
           {
             "name": "access",
+            "description": "access token",
             "in": "path",
             "required": true,
             "type": "string"
@@ -111,6 +114,7 @@
     },
     "/api/v1/manager/id/{id}": {
       "delete": {
+        "summary": "Remove token by id",
         "operationId": "Manager_RemoveID",
         "responses": {
           "200": {
@@ -129,6 +133,7 @@
         "parameters": [
           {
             "name": "id",
+            "description": "CreateRequest.id",
             "in": "path",
             "required": true,
             "type": "string"
@@ -141,6 +146,7 @@
     },
     "/api/v1/manager/verify/{access}": {
       "post": {
+        "summary": "Verify access token signature",
         "operationId": "Manager_Verify",
         "responses": {
           "200": {
@@ -159,6 +165,7 @@
         "parameters": [
           {
             "name": "access",
+            "description": "access token",
             "in": "path",
             "required": true,
             "type": "string"
@@ -175,13 +182,15 @@
       "type": "object",
       "properties": {
         "id": {
-          "type": "string"
+          "type": "string",
+          "description": "create authorization token associated with id, usually the client platform and user id.\n\nlike this :\n* web-1\n* android-1\n* ios-1"
         },
         "pairs": {
           "type": "array",
           "items": {
             "$ref": "#/definitions/managerPair"
-          }
+          },
+          "title": "Initialization key-value pair associated with token"
         }
       }
     },
@@ -189,13 +198,16 @@
       "type": "object",
       "properties": {
         "id": {
-          "type": "string"
+          "type": "string",
+          "title": "provider id"
         },
         "access": {
-          "type": "string"
+          "type": "string",
+          "title": "access token"
         },
         "refresh": {
-          "type": "string"
+          "type": "string",
+          "title": "refresh token"
         }
       }
     },
@@ -203,11 +215,13 @@
       "type": "object",
       "properties": {
         "key": {
-          "type": "string"
+          "type": "string",
+          "title": "key name\n__private_provider_redis is reserved on redis backend"
         },
         "value": {
           "type": "string",
-          "format": "byte"
+          "format": "byte",
+          "title": "serialized binary data, it is recommended to use json serialization"
         }
       }
     },
@@ -215,10 +229,12 @@
       "type": "object",
       "properties": {
         "access": {
-          "type": "string"
+          "type": "string",
+          "title": "old access token"
         },
         "refresh": {
-          "type": "string"
+          "type": "string",
+          "title": "old refresh token"
         }
       }
     },
@@ -226,10 +242,12 @@
       "type": "object",
       "properties": {
         "access": {
-          "type": "string"
+          "type": "string",
+          "title": "new access token"
         },
         "refresh": {
-          "type": "string"
+          "type": "string",
+          "title": "new refresh token"
         }
       }
     },
@@ -243,7 +261,8 @@
       "type": "object",
       "properties": {
         "id": {
-          "type": "string"
+          "type": "string",
+          "title": "provider id"
         }
       }
     },

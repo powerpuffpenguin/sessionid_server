@@ -6,48 +6,57 @@ option go_package = "github.com/powerpuffpenguin/sessionid_server/protocol/provi
 import "google/api/annotations.proto";
 
 service Provider {
+    // Store tokens in the backend
     rpc Create (CreateRequest) returns (CreateResponse){
         option (google.api.http) = {
             post: "/api/v1/provider"
             body: "*"
         };
     }
+    // Remove token by id
     rpc RemoveID (RemoveIDRequest) returns (RemoveIDResponse){
         option (google.api.http) = {
             delete: "/api/v1/provider/id/{id}"
         };
     }
+    // Remove token by access token
     rpc RemoveAccess (RemoveAccessRequest) returns (RemoveAccessResponse){
         option (google.api.http) = {
             delete: "/api/v1/provider/access/{access}"
         };
     }
+    // Verify token status
     rpc Verify (VerifyRequest) returns (VerifyResponse){
         option (google.api.http) = {
             post: "/api/v1/provider/verify/{access}"
         };
     }
+    // Update the key-value pair associated with the token
     rpc Put (PutRequest) returns (PutResponse){
         option (google.api.http) = {
             put: "/api/v1/provider/access/{access}"
             body: "*"
         };
     }
+    // Return the key-value pair associated with the token
     rpc Get (GetRequest) returns (GetResponse){
         option (google.api.http) = {
             get: "/api/v1/provider/access/{access}"
         };
     }
+    // Returns the key associated with the token
     rpc Keys (KeysRequest) returns (KeysResponse){
         option (google.api.http) = {
             get: "/api/v1/provider/keys/{access}"
         };
     }
+    // Delete the key associated with the token
     rpc RemoveKeys (RemoveKeysRequest) returns (RemoveKeysResponse){
         option (google.api.http) = {
             delete: "/api/v1/provider/keys/{access}"
         };
     }
+    // Update the token stored in the backend
     rpc Refresh (RefreshRequest) returns (RefreshResponse){
         option (google.api.http) = {
             post: "/api/v1/provider/refresh"

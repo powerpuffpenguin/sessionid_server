@@ -20,9 +20,13 @@ const _ = grpc.SupportPackageIsVersion7
 type ManagerClient interface {
 	// Create an authorization token
 	Create(ctx context.Context, in *CreateRequest, opts ...grpc.CallOption) (*CreateResponse, error)
+	// Remove token by id
 	RemoveID(ctx context.Context, in *RemoveIDRequest, opts ...grpc.CallOption) (*RemoveIDResponse, error)
+	// Remove token by access token
 	RemoveAccess(ctx context.Context, in *RemoveAccessRequest, opts ...grpc.CallOption) (*RemoveAccessResponse, error)
+	// Verify access token signature
 	Verify(ctx context.Context, in *VerifyRequest, opts ...grpc.CallOption) (*VerifyResponse, error)
+	// Refresh access and refresh token
 	Refresh(ctx context.Context, in *RefreshRequest, opts ...grpc.CallOption) (*RefreshResponse, error)
 }
 
@@ -85,9 +89,13 @@ func (c *managerClient) Refresh(ctx context.Context, in *RefreshRequest, opts ..
 type ManagerServer interface {
 	// Create an authorization token
 	Create(context.Context, *CreateRequest) (*CreateResponse, error)
+	// Remove token by id
 	RemoveID(context.Context, *RemoveIDRequest) (*RemoveIDResponse, error)
+	// Remove token by access token
 	RemoveAccess(context.Context, *RemoveAccessRequest) (*RemoveAccessResponse, error)
+	// Verify access token signature
 	Verify(context.Context, *VerifyRequest) (*VerifyResponse, error)
+	// Refresh access and refresh token
 	Refresh(context.Context, *RefreshRequest) (*RefreshResponse, error)
 	mustEmbedUnimplementedManagerServer()
 }

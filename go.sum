@@ -246,8 +246,8 @@ github.com/pkg/profile v1.5.0/go.mod h1:qBsxPvzyUincmltOk6iyRVxHYg4adc0OFOv72ZdL
 github.com/pmezard/go-difflib v1.0.0 h1:4DBwDE0NGyQoBHbLQYPwSUPoCMWR5BEzIk/f1lZbAQM=
 github.com/pmezard/go-difflib v1.0.0/go.mod h1:iKH77koFhYxTK1pcRnkKkqfTogsbg7gZNVY4sRDYZ/4=
 github.com/posener/complete v1.1.1/go.mod h1:em0nMJCgc9GFtwrmVmEMR/ZL6WyhyjMBndrE9hABlRI=
-github.com/powerpuffpenguin/sessionid v0.0.0-20210513013700-80ba9729bc92 h1:6ravsC96wr6DjnNwoDvvwbDTvCueuThgwXxIRp1Fa2A=
-github.com/powerpuffpenguin/sessionid v0.0.0-20210513013700-80ba9729bc92/go.mod h1:6tSWXFzk9zk/8K00fhlArfe2dtdx0bpys15AYRE/m60=
+github.com/powerpuffpenguin/sessionid v0.0.0-20210513051340-731dbddce9fe h1:x9tyMPkGSeY7P/0YP9aqzyuvuzGpq+8kFRwcIqIy0Jo=
+github.com/powerpuffpenguin/sessionid v0.0.0-20210513051340-731dbddce9fe/go.mod h1:6tSWXFzk9zk/8K00fhlArfe2dtdx0bpys15AYRE/m60=
 github.com/prometheus/client_golang v0.9.1/go.mod h1:7SWBe2y4D6OKWSNQJUaRYU/AaXPKyh/dDVn+NZz0KFw=
 github.com/prometheus/client_golang v0.9.3/go.mod h1:/TN21ttK/J9q6uSwhBd54HahCDft0ttaMvbicHlPoso=
 github.com/prometheus/client_model v0.0.0-20180712105110-5c3871d89910/go.mod h1:MbSGuTsp3dbXC40dX6PRTWyKYBIrTGTE9sqQNg2J8bo=

@@ -18,14 +18,23 @@ const _ = grpc.SupportPackageIsVersion7
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type ProviderClient interface {
+	// Store tokens in the backend
 	Create(ctx context.Context, in *CreateRequest, opts ...grpc.CallOption) (*CreateResponse, error)
+	// Remove token by id
 	RemoveID(ctx context.Context, in *RemoveIDRequest, opts ...grpc.CallOption) (*RemoveIDResponse, error)
+	// Remove token by access token
 	RemoveAccess(ctx context.Context, in *RemoveAccessRequest, opts ...grpc.CallOption) (*RemoveAccessResponse, error)
+	// Verify token status
 	Verify(ctx context.Context, in *VerifyRequest, opts ...grpc.CallOption) (*VerifyResponse, error)
+	// Update the key-value pair associated with the token
 	Put(ctx context.Context, in *PutRequest, opts ...grpc.CallOption) (*PutResponse, error)
+	// Return the key-value pair associated with the token
 	Get(ctx context.Context, in *GetRequest, opts ...grpc.CallOption) (*GetResponse, error)
+	// Returns the key associated with the token
 	Keys(ctx context.Context, in *KeysRequest, opts ...grpc.CallOption) (*KeysResponse, error)
+	// Delete the key associated with the token
 	RemoveKeys(ctx context.Context, in *RemoveKeysRequest, opts ...grpc.CallOption) (*RemoveKeysResponse, error)
+	// Update the token stored in the backend
 	Refresh(ctx context.Context, in *RefreshRequest, opts ...grpc.CallOption) (*RefreshResponse, error)
 }
 
@@ -122,14 +131,23 @@ func (c *providerClient) Refresh(ctx context.Context, in *RefreshRequest, opts .
 // All implementations must embed UnimplementedProviderServer
 // for forward compatibility
 type ProviderServer interface {
+	// Store tokens in the backend
 	Create(context.Context, *CreateRequest) (*CreateResponse, error)
+	// Remove token by id
 	RemoveID(context.Context, *RemoveIDRequest) (*RemoveIDResponse, error)
+	// Remove token by access token
 	RemoveAccess(context.Context, *RemoveAccessRequest) (*RemoveAccessResponse, error)
+	// Verify token status
 	Verify(context.Context, *VerifyRequest) (*VerifyResponse, error)
+	// Update the key-value pair associated with the token
 	Put(context.Context, *PutRequest) (*PutResponse, error)
+	// Return the key-value pair associated with the token
 	Get(context.Context, *GetRequest) (*GetResponse, error)
+	// Returns the key associated with the token
 	Keys(context.Context, *KeysRequest) (*KeysResponse, error)
+	// Delete the key associated with the token
 	RemoveKeys(context.Context, *RemoveKeysRequest) (*RemoveKeysResponse, error)
+	// Update the token stored in the backend
 	Refresh(context.Context, *RefreshRequest) (*RefreshResponse, error)
 	mustEmbedUnimplementedProviderServer()
 }

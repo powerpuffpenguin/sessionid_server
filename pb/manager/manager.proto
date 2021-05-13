@@ -13,21 +13,25 @@ service Manager {
             body: "*"
         };
     }
+    // Remove token by id
     rpc RemoveID (RemoveIDRequest) returns (RemoveIDResponse){
         option (google.api.http) = {
             delete: "/api/v1/manager/id/{id}"
         };
     }
+    // Remove token by access token
     rpc RemoveAccess (RemoveAccessRequest) returns (RemoveAccessResponse){
         option (google.api.http) = {
             delete: "/api/v1/manager/access/{access}"
         };
     }
+    // Verify access token signature
     rpc Verify (VerifyRequest) returns (VerifyResponse){
         option (google.api.http) = {
             post: "/api/v1/manager/verify/{access}"
         };
     }
+    // Refresh access and refresh token
     rpc Refresh (RefreshRequest) returns (RefreshResponse){
         option (google.api.http) = {
             put: "/api/v1/manager"
@@ -36,39 +40,60 @@ service Manager {
     }
 }
 message Pair{
-    string key = 1;   
+    // key name
+    // __private_provider_redis is reserved on redis backend
+    string key = 1;
+    // serialized binary data, it is recommended to use json serialization
 	bytes value = 2;
 }
 message CreateRequest{
+    // create authorization token associated with id, usually the client platform and user id.
+    //
+    // like this :
+    // * web-1
+    // * android-1
+    // * ios-1
     string id = 1;
+    // Initialization key-value pair associated with token
     repeated Pair pairs  = 2;
 }
 message CreateResponse{
+    // provider id
    string id = 1;
+   // access token
    string access = 2;
+   // refresh token
    string refresh = 3;
 }
 message RemoveIDRequest{
+    // CreateRequest.id
     string id = 1;
 }
 message RemoveIDResponse{
 }
 message RemoveAccessRequest{
+    // access token
     string access = 1;
 }
 message RemoveAccessResponse{
 }
 message VerifyRequest{
+    // access token
     string access = 1;
 }
 message VerifyResponse{
+    // provider id
     string id = 1;
  }
  message RefreshRequest{
+    // old access token
     string access = 1;
+    // old refresh token
     string refresh = 2;
  }
  message RefreshResponse{
+     // new access token
     string access = 1;
+    // new refresh token
     string refresh = 2;
  }

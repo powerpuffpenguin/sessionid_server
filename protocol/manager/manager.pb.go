@@ -26,7 +26,10 @@ type Pair struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Key   string `protobuf:"bytes,1,opt,name=key,proto3" json:"key,omitempty"`
+	// key name
+	// __private_provider_redis is reserved on redis backend
+	Key string `protobuf:"bytes,1,opt,name=key,proto3" json:"key,omitempty"`
+	// serialized binary data, it is recommended to use json serialization
 	Value []byte `protobuf:"bytes,2,opt,name=value,proto3" json:"value,omitempty"`
 }
 
@@ -81,7 +84,14 @@ type CreateRequest struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Id    string  `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	// create authorization token associated with id, usually the client platform and user id.
+	//
+	// like this :
+	// * web-1
+	// * android-1
+	// * ios-1
+	Id string `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	// Initialization key-value pair associated with token
 	Pairs []*Pair `protobuf:"bytes,2,rep,name=pairs,proto3" json:"pairs,omitempty"`
 }
 
@@ -136,8 +146,11 @@ type CreateResponse struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Id      string `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
-	Access  string `protobuf:"bytes,2,opt,name=access,proto3" json:"access,omitempty"`
+	// provider id
+	Id string `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	// access token
+	Access string `protobuf:"bytes,2,opt,name=access,proto3" json:"access,omitempty"`
+	// refresh token
 	Refresh string `protobuf:"bytes,3,opt,name=refresh,proto3" json:"refresh,omitempty"`
 }
 
@@ -199,6 +212,7 @@ type RemoveIDRequest struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
+	// CreateRequest.id
 	Id string `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
 }
 
@@ -284,6 +298,7 @@ type RemoveAccessRequest struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
+	// access token
 	Access string `protobuf:"bytes,1,opt,name=access,proto3" json:"access,omitempty"`
 }
 
@@ -369,6 +384,7 @@ type VerifyRequest struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
+	// access token
 	Access string `protobuf:"bytes,1,opt,name=access,proto3" json:"access,omitempty"`
 }
 
@@ -416,6 +432,7 @@ type VerifyResponse struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
+	// provider id
 	Id string `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
 }
 
@@ -463,7 +480,9 @@ type RefreshRequest struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Access  string `protobuf:"bytes,1,opt,name=access,proto3" json:"access,omitempty"`
+	// old access token
+	Access string `protobuf:"bytes,1,opt,name=access,proto3" json:"access,omitempty"`
+	// old refresh token
 	Refresh string `protobuf:"bytes,2,opt,name=refresh,proto3" json:"refresh,omitempty"`
 }
 
@@ -518,7 +537,9 @@ type RefreshResponse struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Access  string `protobuf:"bytes,1,opt,name=access,proto3" json:"access,omitempty"`
+	// new access token
+	Access string `protobuf:"bytes,1,opt,name=access,proto3" json:"access,omitempty"`
+	// new refresh token
 	Refresh string `protobuf:"bytes,2,opt,name=refresh,proto3" json:"refresh,omitempty"`
 }
 
