@@ -84,6 +84,9 @@ else
     target="${Target}"
 fi
 name="${target}_${GOOS}_$GOARCH"
+if [[ "$os" == "windows" ]];then
+    target="$target.exe"
+fi
 case "$pack" in
     7z)
         name="$name.7z"
