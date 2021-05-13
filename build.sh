@@ -13,6 +13,7 @@ function help(){
     echo "  help              help for $0"
     echo "  clear             clear output"
     echo "  go                go build helper"
+    echo "  static            static build helper"
     echo "  grpc              grpc protoc helper"
     echo "  pack              pack release"
     echo "  run               run server"
@@ -39,6 +40,11 @@ case "$1" in
         shift
         export Command="$0 go"
         "$BashDir/script/go.sh" "$@"
+    ;;
+    static)
+        shift
+        export Command="$0 go"
+        "$BashDir/script/static.sh" "$@"
     ;;
     grpc)
         shift

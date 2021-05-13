@@ -20,6 +20,7 @@ type Server struct {
 	gtcp *grpc.Server
 
 	proxyMux *runtime.ServeMux
+	document http.Handler
 }
 
 func NewServer(addr string) (s *Server, e error) {
@@ -47,6 +48,7 @@ func NewServer(addr string) (s *Server, e error) {
 		gpipe:    newServer(proxyMux, clientConn),
 		gtcp:     newServer(nil, nil),
 		proxyMux: proxyMux,
+		document: http.StripPrefix(`/document/`, http.FileServer(defaultDocument())),
 	}
 	return
 }
@@ -56,7 +58,11 @@ func (s *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	if r.ProtoMajor == 2 && strings.Contains(contextType, `application/grpc`) {
 		s.gtcp.ServeHTTP(w, r) // application/grpc 路由給 grpc
 	} else {
-		s.proxyMux.ServeHTTP(w, r) // 非 grpc 路由給 gateway
+		if strings.HasPrefix(r.URL.Path, `/document/`) {
+			s.document.ServeHTTP(w, r)
+		} else {
+			s.proxyMux.ServeHTTP(w, r) // 非 grpc 路由給 gateway
+		}
 	}
 }
 func (s *Server) Serve() (e error) {

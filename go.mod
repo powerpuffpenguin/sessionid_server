@@ -6,6 +6,7 @@ require (
 	github.com/google/go-jsonnet v0.17.0
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.4.0
 	github.com/powerpuffpenguin/sessionid v0.0.0-20210513013700-80ba9729bc92
+	github.com/rakyll/statik v0.1.7 // indirect
 	golang.org/x/net v0.0.0-20210316092652-d523dce5a7f4
 	google.golang.org/genproto v0.0.0-20210426193834-eac7f76ac494
 	google.golang.org/grpc v1.37.1

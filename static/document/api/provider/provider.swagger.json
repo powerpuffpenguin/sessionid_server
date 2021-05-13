@@ -1,0 +1,463 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "provider/provider.proto",
+    "version": "version not set"
+  },
+  "tags": [
+    {
+      "name": "Provider"
+    }
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/api/v1/provider": {
+      "post": {
+        "operationId": "Provider_Create",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/providerCreateResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/providerCreateRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Provider"
+        ]
+      }
+    },
+    "/api/v1/provider/access/{access}": {
+      "get": {
+        "operationId": "Provider_Get",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/providerGetResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "access",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "keys",
+            "in": "query",
+            "required": false,
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "collectionFormat": "multi"
+          }
+        ],
+        "tags": [
+          "Provider"
+        ]
+      },
+      "delete": {
+        "operationId": "Provider_RemoveAccess",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/providerRemoveAccessResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "access",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "Provider"
+        ]
+      },
+      "put": {
+        "operationId": "Provider_Put",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/providerPutResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "access",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/providerPutRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Provider"
+        ]
+      }
+    },
+    "/api/v1/provider/id/{id}": {
+      "delete": {
+        "operationId": "Provider_RemoveID",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/providerRemoveIDResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "Provider"
+        ]
+      }
+    },
+    "/api/v1/provider/keys/{access}": {
+      "get": {
+        "operationId": "Provider_Keys",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/providerKeysResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "access",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "Provider"
+        ]
+      },
+      "delete": {
+        "operationId": "Provider_RemoveKeys",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/providerRemoveKeysResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "access",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "keys",
+            "in": "query",
+            "required": false,
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "collectionFormat": "multi"
+          }
+        ],
+        "tags": [
+          "Provider"
+        ]
+      }
+    },
+    "/api/v1/provider/refresh": {
+      "post": {
+        "operationId": "Provider_Refresh",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/providerRefreshResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/providerRefreshRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Provider"
+        ]
+      }
+    },
+    "/api/v1/provider/verify/{access}": {
+      "post": {
+        "operationId": "Provider_Verify",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/providerVerifyResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "access",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "Provider"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "protobufAny": {
+      "type": "object",
+      "properties": {
+        "typeUrl": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string",
+          "format": "byte"
+        }
+      }
+    },
+    "providerCreateRequest": {
+      "type": "object",
+      "properties": {
+        "access": {
+          "type": "string"
+        },
+        "refresh": {
+          "type": "string"
+        },
+        "pairs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/providerPair"
+          }
+        }
+      }
+    },
+    "providerCreateResponse": {
+      "type": "object"
+    },
+    "providerGetResponse": {
+      "type": "object",
+      "properties": {
+        "value": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/providerValue"
+          }
+        }
+      }
+    },
+    "providerKeysResponse": {
+      "type": "object",
+      "properties": {
+        "result": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "providerPair": {
+      "type": "object",
+      "properties": {
+        "key": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string",
+          "format": "byte"
+        }
+      }
+    },
+    "providerPutRequest": {
+      "type": "object",
+      "properties": {
+        "access": {
+          "type": "string"
+        },
+        "pairs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/providerPair"
+          }
+        }
+      }
+    },
+    "providerPutResponse": {
+      "type": "object"
+    },
+    "providerRefreshRequest": {
+      "type": "object",
+      "properties": {
+        "access": {
+          "type": "string"
+        },
+        "refresh": {
+          "type": "string"
+        },
+        "newAccess": {
+          "type": "string"
+        },
+        "newRefresh": {
+          "type": "string"
+        }
+      }
+    },
+    "providerRefreshResponse": {
+      "type": "object"
+    },
+    "providerRemoveAccessResponse": {
+      "type": "object"
+    },
+    "providerRemoveIDResponse": {
+      "type": "object"
+    },
+    "providerRemoveKeysResponse": {
+      "type": "object"
+    },
+    "providerValue": {
+      "type": "object",
+      "properties": {
+        "bytes": {
+          "type": "string",
+          "format": "byte"
+        },
+        "exists": {
+          "type": "boolean"
+        }
+      }
+    },
+    "providerVerifyResponse": {
+      "type": "object"
+    },
+    "rpcStatus": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/protobufAny"
+          }
+        }
+      }
+    }
+  }
+}

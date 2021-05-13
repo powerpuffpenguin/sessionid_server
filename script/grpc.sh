@@ -53,7 +53,7 @@ function buildGo(){
     else
         mkdir "$output"
     fi
-    local document="bin/document/api"
+    local document="static/document/api"
     if [[ -d "$document" ]];then
         rm "$document/*" -rf
     else

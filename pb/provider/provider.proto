@@ -25,7 +25,6 @@ service Provider {
     rpc Verify (VerifyRequest) returns (VerifyResponse){
         option (google.api.http) = {
             post: "/api/v1/provider/verify/{access}"
-            body: "*"
         };
     }
     rpc Put (PutRequest) returns (PutResponse){

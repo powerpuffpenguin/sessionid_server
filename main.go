@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 
+	_ "github.com/powerpuffpenguin/sessionid_server/assets/document/statik"
 	"github.com/powerpuffpenguin/sessionid_server/configure"
 	_ "github.com/powerpuffpenguin/sessionid_server/gmodule/manager"
 	_ "github.com/powerpuffpenguin/sessionid_server/gmodule/provider"

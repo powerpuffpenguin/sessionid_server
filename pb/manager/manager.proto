@@ -25,7 +25,6 @@ service Manager {
     rpc Verify (VerifyRequest) returns (VerifyResponse){
         option (google.api.http) = {
             post: "/api/v1/manager/verify/{access}"
-            body: "*"
         };
     }
     rpc Refresh (RefreshRequest) returns (RefreshResponse){
