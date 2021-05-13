@@ -14,6 +14,7 @@ func DefaultConfigure() *Configure {
 }
 
 type Configure struct {
+	Auth     Auth
 	Server   Server
 	Manager  Manager
 	Provider Provider

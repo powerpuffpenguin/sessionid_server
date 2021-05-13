@@ -4,6 +4,7 @@ go 1.16
 
 require (
 	github.com/google/go-jsonnet v0.17.0
+	github.com/grpc-ecosystem/go-grpc-middleware v1.3.0 // indirect
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.4.0
 	github.com/powerpuffpenguin/sessionid v0.0.0-20210513051340-731dbddce9fe
 	github.com/rakyll/statik v0.1.7

@@ -7,6 +7,7 @@ import (
 	"strings"
 
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
+	"github.com/powerpuffpenguin/sessionid_server/configure"
 	"golang.org/x/net/http2"
 	"golang.org/x/net/http2/h2c"
 	"google.golang.org/grpc"
@@ -23,7 +24,7 @@ type Server struct {
 	document http.Handler
 }
 
-func NewServer(addr string) (s *Server, e error) {
+func NewServer(addr string, auth *configure.Auth) (s *Server, e error) {
 	tcp, e := net.Listen(`tcp`, addr)
 	if e != nil {
 		return
@@ -45,8 +46,8 @@ func NewServer(addr string) (s *Server, e error) {
 	s = &Server{
 		pipe:     pipe,
 		tcp:      tcp,
-		gpipe:    newServer(proxyMux, clientConn),
-		gtcp:     newServer(nil, nil),
+		gpipe:    newServer(proxyMux, clientConn, auth),
+		gtcp:     newServer(nil, nil, auth),
 		proxyMux: proxyMux,
 		document: http.StripPrefix(`/document/`, http.FileServer(defaultDocument())),
 	}

@@ -38,14 +38,15 @@ func main() {
 		if e != nil {
 			log.Fatalln(e)
 		}
-		e = logger.Init(&configure.DefaultConfigure().Logger)
+		defcnf := configure.DefaultConfigure()
+		e = logger.Init(&defcnf.Logger)
 		if e != nil {
 			log.Fatalln(e)
 		}
 		system.Init()
 
-		serverCnf := configure.DefaultConfigure().Server
-		srv, e := server.NewServer(serverCnf.Addr)
+		serverCnf := defcnf.Server
+		srv, e := server.NewServer(serverCnf.Addr, &defcnf.Auth)
 		if e != nil {
 			log.Fatalln(e)
 		}
