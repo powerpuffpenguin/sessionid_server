@@ -1,12 +1,18 @@
 {
   "swagger": "2.0",
   "info": {
-    "title": "provider/provider.proto",
+    "title": "manager/manager.proto",
     "version": "version not set"
   },
   "tags": [
     {
+      "name": "Manager"
+    },
+    {
       "name": "Provider"
+    },
+    {
+      "name": "Logger"
     }
   ],
   "consumes": [
@@ -16,6 +22,253 @@
     "application/json"
   ],
   "paths": {
+    "/api/v1/logger": {
+      "get": {
+        "summary": "return logger level",
+        "operationId": "Logger_Level",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/loggerLevelResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "tags": [
+          "Logger"
+        ]
+      }
+    },
+    "/api/v1/logger/console/{level}": {
+      "post": {
+        "summary": "set console level",
+        "operationId": "Logger_Console",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/loggerConsoleResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "level",
+            "description": "debug info warn error dpanic panic fatal",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "Logger"
+        ]
+      }
+    },
+    "/api/v1/logger/file/{level}": {
+      "post": {
+        "summary": "set file level",
+        "operationId": "Logger_File",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/loggerFileResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "level",
+            "description": "debug info warn error dpanic panic fatal",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "Logger"
+        ]
+      }
+    },
+    "/api/v1/manager": {
+      "post": {
+        "summary": "Create an authorization token",
+        "operationId": "Manager_Create",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/managerCreateResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/managerCreateRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Manager"
+        ]
+      },
+      "put": {
+        "summary": "Refresh access and refresh token",
+        "operationId": "Manager_Refresh",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/managerRefreshResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/managerRefreshRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Manager"
+        ]
+      }
+    },
+    "/api/v1/manager/access/{access}": {
+      "delete": {
+        "summary": "Remove token by access token",
+        "operationId": "Manager_RemoveAccess",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/managerRemoveAccessResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "access",
+            "description": "access token",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "Manager"
+        ]
+      }
+    },
+    "/api/v1/manager/id/{id}": {
+      "delete": {
+        "summary": "Remove token by id",
+        "operationId": "Manager_RemoveID",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/managerRemoveIDResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "description": "CreateRequest.id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "Manager"
+        ]
+      }
+    },
+    "/api/v1/manager/verify/{access}": {
+      "post": {
+        "summary": "Verify access token signature",
+        "operationId": "Manager_Verify",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/managerVerifyResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "access",
+            "description": "access token",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "Manager"
+        ]
+      }
+    },
     "/api/v1/provider": {
       "post": {
         "summary": "Store tokens in the backend",
@@ -323,6 +576,111 @@
     }
   },
   "definitions": {
+    "loggerConsoleResponse": {
+      "type": "object"
+    },
+    "loggerFileResponse": {
+      "type": "object"
+    },
+    "loggerLevelResponse": {
+      "type": "object",
+      "properties": {
+        "file": {
+          "type": "string"
+        },
+        "console": {
+          "type": "string"
+        }
+      }
+    },
+    "managerCreateRequest": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "create authorization token associated with id, usually the client platform and user id.\n\nlike this :\n* web-1\n* android-1\n* ios-1"
+        },
+        "pairs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/managerPair"
+          },
+          "title": "Initialization key-value pair associated with token"
+        }
+      }
+    },
+    "managerCreateResponse": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "provider id"
+        },
+        "access": {
+          "type": "string",
+          "title": "access token"
+        },
+        "refresh": {
+          "type": "string",
+          "title": "refresh token"
+        }
+      }
+    },
+    "managerPair": {
+      "type": "object",
+      "properties": {
+        "key": {
+          "type": "string",
+          "title": "key name\n__private_provider_redis is reserved on redis backend"
+        },
+        "value": {
+          "type": "string",
+          "format": "byte",
+          "title": "serialized binary data, it is recommended to use json serialization"
+        }
+      }
+    },
+    "managerRefreshRequest": {
+      "type": "object",
+      "properties": {
+        "access": {
+          "type": "string",
+          "title": "old access token"
+        },
+        "refresh": {
+          "type": "string",
+          "title": "old refresh token"
+        }
+      }
+    },
+    "managerRefreshResponse": {
+      "type": "object",
+      "properties": {
+        "access": {
+          "type": "string",
+          "title": "new access token"
+        },
+        "refresh": {
+          "type": "string",
+          "title": "new refresh token"
+        }
+      }
+    },
+    "managerRemoveAccessResponse": {
+      "type": "object"
+    },
+    "managerRemoveIDResponse": {
+      "type": "object"
+    },
+    "managerVerifyResponse": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "provider id"
+        }
+      }
+    },
     "protobufAny": {
       "type": "object",
       "properties": {
