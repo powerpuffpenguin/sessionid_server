@@ -58,6 +58,7 @@ func (m *Manager) Create(ctx context.Context,
 	if e != nil {
 		return
 	}
+	refresh = resp.Refresh
 	return
 }
 
