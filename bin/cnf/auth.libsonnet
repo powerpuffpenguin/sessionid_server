@@ -1,5 +1,5 @@
 {
-    Auth: true,
+    Auth: false,
     Rule: [
         {
             URL: [
