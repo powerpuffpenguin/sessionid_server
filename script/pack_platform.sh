@@ -79,10 +79,11 @@ do
 done
 
 if [[ "$debug" == 1 ]];then
-    name="${Target}d_${GOOS}_$GOARCH"
+    target="${Target}d"
 else
-    name="${Target}_${GOOS}_$GOARCH"
+    target="${Target}"
 fi
+name="${target}_${GOOS}_$GOARCH"
 case "$pack" in
     7z)
         name="$name.7z"
@@ -94,15 +95,15 @@ case "$pack" in
     ;;
     gz)
         name="$name.tar.gz"
-        args=(tar -cvf "$name")
+        args=(tar -zcvf "$name")
     ;;
     bz2)
-        name="$name.tar.gz"
-        args=(tar -cvf "$name")
+        name="$name.tar.bz2"
+        args=(tar -jcvf "$name")
     ;;
     xz)
-        name="$name.tar.gz"
-        args=(tar -cvf "$name")
+        name="$name.tar.xz"
+        args=(tar -Jcvf "$name")
     ;;
 esac
 if [[ "$args" == "" ]];then
