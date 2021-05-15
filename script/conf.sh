@@ -1,6 +1,6 @@
 Target="server"
 Dir=$(cd "$(dirname $BASH_SOURCE)/.." && pwd)
-Version="v1.0.0"
+Version="v1.0.1"
 Platforms=(
     darwin/amd64
     windows/amd64

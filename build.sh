@@ -19,6 +19,7 @@ function help(){
     echo "  grpc              grpc protoc helper"
     echo "  pack              pack release"
     echo "  run               run project"
+    echo "  docker            docker build helper"
     echo
     echo "Flags:"
     echo "  -h, --help          help for $0"
@@ -57,6 +58,11 @@ case "$1" in
         shift
         export Command="$0 run"
         "$BashDir/script/run.sh" "$@"
+    ;;
+    docker)
+        shift
+        export Command="$0 docker"
+        "$BashDir/script/docker.sh" "$@"
     ;;
     *)
         if [[ "$1" == "" ]];then

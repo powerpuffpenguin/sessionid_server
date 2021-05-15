@@ -4,14 +4,9 @@ import (
 	"context"
 
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
-	"github.com/powerpuffpenguin/sessionid_server/gmodule"
 	grpc_logger "github.com/powerpuffpenguin/sessionid_server/protocol/logger"
 	"google.golang.org/grpc"
 )
-
-func init() {
-	gmodule.RegisterModule(`logger`, Module(0))
-}
 
 type Module int
 

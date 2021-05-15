@@ -26,3 +26,5 @@
 /bin/server
 /bin/serverd
 /bin/logs/
+
+/docker/server/server

@@ -7,9 +7,6 @@ import (
 
 	_ "github.com/powerpuffpenguin/sessionid_server/assets/document/statik"
 	"github.com/powerpuffpenguin/sessionid_server/configure"
-	_ "github.com/powerpuffpenguin/sessionid_server/gmodule/logger"
-	_ "github.com/powerpuffpenguin/sessionid_server/gmodule/manager"
-	_ "github.com/powerpuffpenguin/sessionid_server/gmodule/provider"
 	"github.com/powerpuffpenguin/sessionid_server/logger"
 	"github.com/powerpuffpenguin/sessionid_server/server"
 	"github.com/powerpuffpenguin/sessionid_server/system"
@@ -44,7 +41,7 @@ func main() {
 			log.Fatalln(e)
 		}
 		system.Init()
-
+		registerModule()
 		serverCnf := defcnf.Server
 		srv, e := server.NewServer(serverCnf.Addr, &defcnf.Auth)
 		if e != nil {

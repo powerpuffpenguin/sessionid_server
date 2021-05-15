@@ -4,14 +4,9 @@ import (
 	"context"
 
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
-	"github.com/powerpuffpenguin/sessionid_server/gmodule"
 	grpc_manager "github.com/powerpuffpenguin/sessionid_server/protocol/manager"
 	"google.golang.org/grpc"
 )
-
-func init() {
-	gmodule.RegisterModule(`manager`, Module(0))
-}
 
 type Module int
 
