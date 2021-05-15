@@ -20,7 +20,7 @@ function help(){
 }
 
 
-ARGS=`getopt -o hgp: --long help,go,push: -n "$Command" -- "$@"`
+ARGS=`getopt -o hgp --long help,go,push -n "$Command" -- "$@"`
 eval set -- "${ARGS}"
 go=0
 push=0
