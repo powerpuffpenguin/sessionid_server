@@ -4,9 +4,9 @@ go 1.16
 
 require (
 	github.com/google/go-jsonnet v0.17.0
-	github.com/grpc-ecosystem/go-grpc-middleware v1.3.0 // indirect
+	github.com/grpc-ecosystem/go-grpc-middleware v1.3.0
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.4.0
-	github.com/powerpuffpenguin/sessionid v0.0.0-20210513051340-731dbddce9fe
+	github.com/powerpuffpenguin/sessionid v0.0.0-20210526073144-ca6285fc8dec
 	github.com/rakyll/statik v0.1.7
 	go.uber.org/zap v1.16.0
 	golang.org/x/net v0.0.0-20210316092652-d523dce5a7f4
